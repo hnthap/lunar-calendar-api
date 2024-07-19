@@ -84,7 +84,7 @@ Return: JSON object of the equivalent date in Lunar calendar.
 Example: To convert the Lunar date: day 15, month 8 (not leap), approximately in AD 2024, in time zone +07:00, to Lunar calendar,
 
 ```
-/convert?source=Lunar&target=Gregorian&y=2024&m=8&leap=false&d=15&z=7
+GET /convert?source=Lunar&target=Gregorian&y=2024&m=8&leap=false&d=15&z=7
 ```
 
 This should send:

@@ -6,7 +6,6 @@ import { helpRouter } from "./routers/help.router";
 
 function main() {
   config();
-  process.env.TZ = "Europe/Rome";
   const PORT = process.env.PORT ?? "3000";
   const app = express()
     .use(cors())
