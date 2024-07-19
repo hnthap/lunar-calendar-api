@@ -1,0 +1,27 @@
+{
+  "name": "lunar_calendar",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "node js/src",
+    "build": "tsc",
+    "watch-ts": "tsc -w",
+    "watch-node": "node --watch js/src",
+    "dev": "concurrently -c \"blue,green\" \"npm:watch-ts\" \"npm:watch-node\" --kill-others",
+    "test": "mocha 'js/tests/**/*.test.js'"
+  },
+  "author": "Huynh Nhan Thap",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.28",
+    "mocha": "^10.3.0",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
