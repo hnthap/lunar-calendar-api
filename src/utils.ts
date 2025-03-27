@@ -1,15 +1,28 @@
+/**
+ * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
+ *
+ * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
+ * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
+ *
+ * Permission to use, copy, modify, and redistribute this software and its
+ * documentation for personal, non-commercial use is hereby granted provided that
+ * this copyright notice and appropriate documentation appears in all copies.
+ * --------------------
+ *
+ * TypeScript translation of Ho Ngoc Duc's work:
+ *
+ * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
+ *
+ * Permission to use, copy, modify, and redistribute this software and its
+ * documentation for personal, non-commercial use is hereby granted provided
+ * that this copyright notice and appropriate documentation appears in all
+ * copies.
+ */
+
 import express from "express";
 
 const DEGREES_TO_RADIANS = Math.PI / 180.0;
 const TAU = Math.PI * 2;
-
-export function isParsableToInt(s: unknown): s is string {
-  return typeof s === "string" && /[+-]?[0-9]+/.test(s);
-}
-
-export function isParsableToBoolean(s: unknown): s is string {
-  return typeof s === "string" && /true|false|0|1/i.test(s);
-}
 
 export function getHelpLink(req: express.Request) {
   return `See ${req.protocol}://${req.get("host")}/help for more.`;
@@ -26,24 +39,29 @@ export function notifyMissingParam(
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param s 
+ * @returns true if `s` is parsable to integer, otherwise, false
+ */
+export function isParsableToInt(s: unknown): s is string {
+  return typeof s === "string" && /[+-]?[0-9]+/.test(s);
+}
+
+/**
+ * 
+ * @param s 
+ * @returns true if `s` is parsable to boolean, otherwise, false
+ */
+export function isParsableToBoolean(s: unknown): s is string {
+  return typeof s === "string" && /true|false|0|1/i.test(s);
+}
+
+/**
+ * Calculate the start of the 11th lunar month in the specified Gregorian year
+ * and time zone.
+ * @param yearGregorian Year in Gregorian calendar
+ * @param timeZoneHours Time zone offset in hours
+ * @returns Start date (in JD) of the 11th lunar month
  */
 export function get11thLunarMonthsStartDateJD(
   yearGregorian: number,
@@ -59,24 +77,9 @@ export function get11thLunarMonthsStartDateJD(
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param jd JD
+ * @returns Gregorian date as an array of `[year, month, day]`
  */
 export function getGregorianDateFromJD(
   jd: number
@@ -95,24 +98,11 @@ export function getGregorianDateFromJD(
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param year Gregorian year
+ * @param month Gregorian month, starting from 1
+ * @param day Gregorian day of month, starting from 1
+ * @returns JD
  */
 export function getJDFromGregorianDate(
   year: number,
@@ -134,24 +124,11 @@ export function getJDFromGregorianDate(
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
- * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * Calculate leap month offset from the start of the 11th lunar month and time
+ * zone.
+ * @param newMoon11 The start of an 11th lunar month
+ * @param timeZoneHours Time zone offset in hours
+ * @returns Leap month offset
  */
 export function getLeapMonthOffset(
   newMoon11: number,
@@ -176,24 +153,9 @@ export function getLeapMonthOffset(
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param n 
+ * @returns Start of nth new moon since Jan 1 1900 (in JD)
  */
 export function getNthNewMoon(n: number) {
   const t = n / 1236.85;
@@ -234,48 +196,19 @@ export function getNthNewMoon(n: number) {
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param n 
+ * @param timeZoneHours Time zone offset in hours
+ * @returns nth new moon in specified time zone
  */
 export function getNthNewMoonWithTimeZone(n: number, timeZoneHours: number) {
   return Math.floor(getNthNewMoon(n) + 0.5 + timeZoneHours / 24);
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param jdn 
+ * @returns Solar ecliptic longitude
  */
 export function getSolarEclipticLongitude(jdn: number): number {
   const t = (jdn - 2451545.0) / 36525;
@@ -291,24 +224,10 @@ export function getSolarEclipticLongitude(jdn: number): number {
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param jdn 
+ * @param timeZoneHours Time zone offset in hours
+ * @returns Major solar term
  */
 export function getMajorSolarTerm(jdn: number, timeZoneHours: number): number {
   return Math.floor(
@@ -317,24 +236,9 @@ export function getMajorSolarTerm(jdn: number, timeZoneHours: number): number {
 }
 
 /**
- * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
- *
- * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
- * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided that
- * this copyright notice and appropriate documentation appears in all copies.
- * --------------------
  * 
- * About the TypeScript translation of Ho Ngoc Duc's work:
- *
- * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
- *
- * Permission to use, copy, modify, and redistribute this software and its
- * documentation for personal, non-commercial use is hereby granted provided
- * that this copyright notice and appropriate documentation appears in all
- * copies.
+ * @param degrees 
+ * @returns Sine of specified degrees
  */
 export function sinDegrees(degrees: number): number {
   return Math.sin(degrees * DEGREES_TO_RADIANS);

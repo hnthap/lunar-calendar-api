@@ -42,7 +42,7 @@ convertRouter.get("/", function (req, res) {
   const month = parseInt(q.m, 10);
   const day = parseInt(q.d, 10);
   const timeZoneHours = parseInt(q.z, 10);
-  if (q.source === "Gregorian") {
+  if (q.source === "Gregorian" || q.source === "g") {
     const date = LunarDate.fromGregorian(year, month, day, timeZoneHours);
     return res.send({
       year: date.getApproxGregorianYear(),

@@ -1,3 +1,25 @@
+/**
+ * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
+ *
+ * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
+ * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
+ *
+ * Permission to use, copy, modify, and redistribute this software and its
+ * documentation for personal, non-commercial use is hereby granted provided that
+ * this copyright notice and appropriate documentation appears in all copies.
+ * --------------------
+ *
+ * TypeScript translation of Ho Ngoc Duc's work:
+ *
+ * Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
+ *
+ * Permission to use, copy, modify, and redistribute this software and its
+ * documentation for personal, non-commercial use is hereby granted provided
+ * that this copyright notice and appropriate documentation appears in all
+ * copies.
+ */
+
+import { LanguageName } from "./language";
 import {
   get11thLunarMonthsStartDateJD,
   getGregorianDateFromJD,
@@ -55,15 +77,21 @@ export class LunarDate {
     return this.leap;
   }
 
+  toString(language: LanguageName) {
+    if (language === "Vietnamese" || language === "vi") {
+      return `${this.day}/${this.month} (${
+        this.leap ? "nhuận" : "không nhuận"
+      })`;
+    }
+    if (language === "Chinese" || language === "zh") {
+      return `${this.leap ? "閏" : ""}${this.month}月${this.day}日`;
+    }
+    return `${this.leap ? "leap " : ""}month ${this.month}, day ${this.day}`;
+  }
+
   /**
-   * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
-   *
-   * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
-   * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
-   *
-   * Permission to use, copy, modify, and redistribute this software and its
-   * documentation for personal, non-commercial use is hereby granted provided that
-   * this copyright notice and appropriate documentation appears in all copies.
+   * Convert this Lunar date to Gregorian.
+   * @returns Gregorian date as an array of `[year, month, day]`
    */
   toGregorian() {
     let newMoonA, newMoonB: number;
@@ -111,19 +139,13 @@ export class LunarDate {
     return getGregorianDateFromJD(monthStart + this.day - 1);
   }
 
-  toString() {
-    return `${this.day}/${this.month} (${this.leap ? "nhuận" : "không nhuận"})`;
-  }
-
   /**
-   * https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
-   *
-   * Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
-   * Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
-   *
-   * Permission to use, copy, modify, and redistribute this software and its
-   * documentation for personal, non-commercial use is hereby granted provided that
-   * this copyright notice and appropriate documentation appears in all copies.
+   * Convert a Gregorian date to Lunar calendar.
+   * @param year Gregorian year
+   * @param month Gregorian month, starting from 1
+   * @param day Gregorian day of month, starting from 1
+   * @param timeZoneHours Time zone offset in hours
+   * @returns The Lunar date
    */
   static fromGregorian(
     year: number,
