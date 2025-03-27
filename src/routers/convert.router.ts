@@ -1,21 +1,27 @@
 import express from "express";
-import { isCalendarName } from "../CalendarName";
-import { LunarDate } from "../LunarDate";
+import { GregorianDate, isCalendarName, LunarDate } from "../types/calendar";
+import { getGregorianDate } from "../utils/Gregorian";
+import {
+  convertGregorianToLunar,
+  convertLunarToGregorian,
+  getLunarDate,
+} from "../utils/algorithms";
 import {
   isParsableToBoolean,
   isParsableToInt,
-  notifyMissingParam,
-} from "../utils";
+  respondInvalidParameter,
+  respondMissingParameter,
+} from "../utils/utils";
 
 export const convertRouter = express.Router();
 
 convertRouter.get("/", function (req, res) {
   const { query: q } = req;
   if (!isCalendarName(q.source)) {
-    return notifyMissingParam("source", res, req);
+    return respondMissingParameter("source", res, req);
   }
   if (!isCalendarName(q.target)) {
-    return notifyMissingParam("target", res, req);
+    return respondMissingParameter("target", res, req);
   }
   if (q.source === q.target) {
     return res.status(400).send({
@@ -24,58 +30,86 @@ convertRouter.get("/", function (req, res) {
     });
   }
   if (!isParsableToInt(q.y)) {
-    return notifyMissingParam("y", res, req);
+    return respondMissingParameter("y", res, req);
   }
   if (!isParsableToInt(q.m)) {
-    return notifyMissingParam("m", res, req);
+    return respondMissingParameter("m", res, req);
   }
   if (!isParsableToInt(q.d)) {
-    return notifyMissingParam("d", res, req);
+    return respondMissingParameter("d", res, req);
   }
   if (!isParsableToInt(q.z)) {
-    return notifyMissingParam("z", res, req);
+    return respondMissingParameter("z", res, req);
   }
   if (!isParsableToBoolean(q.leap) && q.source === "Lunar") {
-    return notifyMissingParam("leap", res, req);
+    return respondMissingParameter("leap", res, req);
   }
   const year = parseInt(q.y, 10);
   const month = parseInt(q.m, 10);
   const day = parseInt(q.d, 10);
-  const timeZoneHours = parseInt(q.z, 10);
+  const tz = parseInt(q.z, 10);
   if (q.source === "Gregorian" || q.source === "g") {
-    const date = LunarDate.fromGregorian(year, month, day, timeZoneHours);
-    return res.send({
-      year: date.getApproxGregorianYear(),
-      month: date.getMonth(),
-      leap: date.isLeapMonth(),
-      day: date.getDay(),
+    return handleGregorianToLunar({ year, month, day, tz }, res.send, () => {
+      return respondInvalidParameter(null, res, req);
     });
   } else {
     const leap = q.leap === "true" || q.leap === "1";
-    const date = new LunarDate(
-      year,
-      month,
-      leap,
-      day,
-      timeZoneHours
-    ).toGregorian();
-    if (date === null) {
-      return res.status(400).send({
-        message:
-          "Invalid date in Lunar calendar: year " +
-          year +
-          ", month " +
-          month +
-          (leap ? " (leap)" : "") +
-          ", day " +
-          day,
-      });
-    }
-    return res.send({
-      year: date[0],
-      month: date[1],
-      day: date[2],
-    });
+    return handleLunarToGregorian(
+      { year, month, leap, day, tz },
+      res.send,
+      () => {
+        return respondInvalidParameter(null, res, req);
+      }
+    );
   }
-  throw new Error("Unreachable code.");
 });
+
+function handleGregorianToLunar(
+  date: Pick<GregorianDate, "year" | "month" | "day" | "tz">,
+  onSuccess: (
+    result: Pick<LunarDate, "year" | "month" | "monthSize" | "leap" | "day">
+  ) => void,
+  onFailure: () => void
+) {
+  const gregorianDate = getGregorianDate(
+    date.year,
+    date.month,
+    date.day,
+    date.tz
+  );
+  if (gregorianDate === null) {
+    return onFailure();
+  }
+  const lunarDate = convertGregorianToLunar(gregorianDate);
+  const result = {
+    year: lunarDate.year,
+    month: lunarDate.month,
+    monthSize: lunarDate.monthSize,
+    leap: lunarDate.leap,
+    day: lunarDate.day,
+  };
+  return onSuccess(result);
+}
+
+function handleLunarToGregorian(
+  date: Pick<LunarDate, "year" | "month" | "leap" | "day" | "tz">,
+  onSuccess: (result: Pick<GregorianDate, "year" | "month" | "day">) => void,
+  onFailure: () => void
+) {
+  const lunarDate = getLunarDate(
+    date.year,
+    date.month,
+    date.leap,
+    date.day,
+    date.tz
+  );
+  if (lunarDate === null) {
+    return onFailure();
+  }
+  const gregorianDate = convertLunarToGregorian(lunarDate);
+  return onSuccess({
+    year: gregorianDate.year,
+    month: gregorianDate.month,
+    day: gregorianDate.day,
+  });
+}
