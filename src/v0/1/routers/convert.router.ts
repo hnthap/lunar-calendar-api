@@ -1,9 +1,9 @@
 import express from "express";
 import { GregorianDate, isCalendarName, LunarDate } from "../types/calendar";
-import { getGregorianDate } from "../utils/Gregorian";
 import {
   convertGregorianToLunar,
   convertLunarToGregorian,
+  getGregorianDate,
   getLunarDate,
 } from "../utils/algorithms";
 import {
@@ -26,7 +26,9 @@ convertRouter.get("/", function (req, res) {
   if (q.source === q.target) {
     return res.status(400).send({
       message:
-        '"source" and "target" must not be the same ("' + q.source + '")',
+      '"source" and "target" must not be the same ("' +
+      q.source +
+      '")',
     });
   }
   if (!isParsableToInt(q.y)) {
@@ -49,9 +51,13 @@ convertRouter.get("/", function (req, res) {
   const day = parseInt(q.d, 10);
   const tz = parseInt(q.z, 10);
   if (q.source === "Gregorian" || q.source === "g") {
-    return handleGregorianToLunar({ year, month, day, tz }, res.send, () => {
-      return respondInvalidParameter(null, res, req);
-    });
+    return handleGregorianToLunar(
+      { year, month, day, tz },
+      res.send,
+      () => {
+        return respondInvalidParameter(null, res, req);
+      }
+    );
   } else {
     const leap = q.leap === "true" || q.leap === "1";
     return handleLunarToGregorian(

@@ -9,7 +9,7 @@ test("Gregorian date to Lunar (1)", async () => {
   const day = 30;
   const tz = 8;
   const res = await request(app).get(
-    `/convert/?source=g&target=l&y=${year}&m=${month}&d=${day}&z=${tz}`
+    `/v1/convert/?source=g&target=l&y=${year}&m=${month}&d=${day}&z=${tz}`
   );
   deepStrictEqual(res.statusCode, 200);
   deepStrictEqual(res.body, {

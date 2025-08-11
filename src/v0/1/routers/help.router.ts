@@ -58,5 +58,10 @@ const helpInfo: HelpInfo = [
 export const helpRouter = express.Router();
 
 helpRouter.get("/", function (req, res) {
-  return res.send(helpInfo);
+  return res.send(
+    helpInfo.map((item) => {
+      item.url = "/v0/1" + item.url;
+      return item;
+    })
+  );
 });
