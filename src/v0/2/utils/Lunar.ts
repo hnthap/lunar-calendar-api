@@ -22,6 +22,11 @@ export function stringifyLunarDate(
     case "zh":
       return stringifyLunarDateInChinese(lunarDate, showMonthSize);
 
+    case "zh-cn":
+      return stringifyLunarDateInChinese(lunarDate, showMonthSize, {
+        traditional: false,
+      });
+
     case "en":
     // fall through
 
@@ -38,8 +43,11 @@ export function stringifyLunarDate(
  */
 export function stringifyLunarDateInChinese(
   lunarDate: LunarDate,
-  showMonthSize: boolean
+  showMonthSize: boolean,
+  options?: { traditional?: boolean }
 ): string {
+  options = options || {};
+  options.traditional = options.traditional ?? true;
   const year =
     getLunarYearStem(lunarDate.year, "zh") +
     getLunarYearBranch(lunarDate.year, "zh") +
@@ -49,7 +57,7 @@ export function stringifyLunarDateInChinese(
     month = "正";
   }
   month += "月";
-  const leap = lunarDate.leap ? "閏" : "";
+  const leap = lunarDate.leap ? (options.traditional ? "閏" : "闰") : "";
   const monthSize = showMonthSize
     ? lunarDate.monthSize === 29
       ? "（小）"

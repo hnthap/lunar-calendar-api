@@ -1,5 +1,5 @@
 import express from "express";
-import { languageNames } from "../types/language";
+import { languageNameMeanings, languageNames } from "../types/language";
 
 type HelpInfo = {
   action: string;
@@ -37,7 +37,10 @@ const helpInfo: HelpInfo = [
         param: "lang",
         meaning:
           "[Optional] Language of the textual representation of Lunar date. Must be one of: " +
-          languageNames.join(", "),
+          languageNames
+            .map((name) => `"${name}" (${languageNameMeanings[name]})`)
+            .join(", ") +
+          '. Default is "en" (English, i.e. modern representation).',
       },
     ],
   },
