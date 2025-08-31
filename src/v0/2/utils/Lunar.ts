@@ -59,7 +59,7 @@ export function stringifyLunarDateInChinese(
   if (lunarDate.day < 11) {
     day = "初" + day;
   }
-  return year + month + monthSize + day;
+  return year + leap + month + monthSize + day;
 }
 
 /**
