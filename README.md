@@ -232,6 +232,14 @@ This should send:
 
 which means the Lunar date falls in September 17th, 2024 (Gregorian calendar).
 
+### Show Help
+
+```http
+GET /v0/2/help
+```
+
+Return: API documentation in JSON format.
+
 ## Built With
 
 [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)

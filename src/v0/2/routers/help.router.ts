@@ -98,7 +98,3 @@ helpRouter.get("/", function (req, res) {
     })
   );
 });
-
-export const redirectToHelp: express.RequestHandler = (res, req) => {
-  return req.redirect("/v0/2/help");
-};
