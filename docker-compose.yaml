@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  lunar-calendar-api:
+    build: .
+    container_name: lunar-calendar-api
+    ports:
+      - "3000:3000"
+    restart: always

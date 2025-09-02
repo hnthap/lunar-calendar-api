@@ -1,9 +1,21 @@
 import express from "express";
 import { languageNameMeanings, languageNames } from "../types/language";
 
+type MethodName =
+  | "GET"
+  | "HEAD"
+  | "OPTIONS"
+  | "TRACE"
+  | "PUT"
+  | "DELETE"
+  | "POST"
+  | "PATCH"
+  | "CONNECT";
+
 type HelpInfo = {
   action: string;
-  url: string;
+  method: MethodName;
+  endpoint: string;
   params: {
     param: string;
     meaning: string;
@@ -13,7 +25,8 @@ type HelpInfo = {
 const helpInfo: HelpInfo = [
   {
     action: "Convert Gregorian date to Lunar calendar",
-    url: "/g2l",
+    method: "GET",
+    endpoint: "/g2l",
     params: [
       {
         param: "y",
@@ -46,7 +59,8 @@ const helpInfo: HelpInfo = [
   },
   {
     action: "Convert Lunar date to Gregorian calendar",
-    url: "/l2g",
+    method: "GET",
+    endpoint: "/l2g",
     params: [
       {
         param: "y",
@@ -79,7 +93,7 @@ export const helpRouter = express.Router();
 helpRouter.get("/", function (req, res) {
   return res.send(
     helpInfo.map((item) => {
-      item.url = "/v0/2" + item.url;
+      item.endpoint = "/v0/2" + item.endpoint;
       return item;
     })
   );
