@@ -4,7 +4,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/hnthap/lunar-calendar-api?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api/stargazers)
 [![Netlify Status](https://img.shields.io/netlify/335cf848-089d-4346-a941-85ce9813328b?style=for-the-badge&logo=netlify)](https://app.netlify.com/projects/lunar-calendar-api/deploys)
 
-🔗 **[Try API](https://lunar-calendar-api.netlify.app)** | ✨ **[Try Web App](https://hnthap.github.io/lunar)** | 📖 **[API Documentation](#api)**
+🔗 **[Try API](https://lunar-calendar-api.netlify.app)** | ✨ **[Try Web App](https://hnthap.github.io/lunar-calendar-converter-interface/)** | 📖 **[API Documentation](#api)**
 
 > *An API that converts between Gregorian and Lunar calendar systems, serving cultural and religious applications worldwide*
 
