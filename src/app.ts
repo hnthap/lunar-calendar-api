@@ -4,8 +4,11 @@ import { v01Router } from "./v0/1";
 import { convertRouter } from "./v0/1/routers/convert.router";
 import { helpRouter } from "./v0/1/routers/help.router";
 import { v02Router } from "./v0/2";
+import { apiKeyAuth } from "./middleware/apiKeyAuth";
 
 export const app = express().use(cors());
+
+app.use(apiKeyAuth);
 
 // API v0.2
 app.use("/v0/2", v02Router);

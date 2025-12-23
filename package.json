@@ -7,8 +7,8 @@
     "build": "tsc",
     "watch-ts": "tsc -w",
     "watch-node": "node --watch js/src",
-    "dev": "concurrently -c \"blue,green\" \"npm:watch-ts\" \"npm:watch-node\" --kill-others",
-    "test": "npm run build && node --test js/tests/**/*.js"
+    "dev": "concurrently -c \"blue,green\" \"bun run watch-ts\" \"bun run watch-node\" --kill-others",
+    "test": "bun run build && bun test"
   },
   "author": "Huynh Nhan Thap",
   "license": "See LICENSE",

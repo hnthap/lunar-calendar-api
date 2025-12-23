@@ -49,6 +49,45 @@ Run the server locally (see below), then convert September 2nd, 2025 (Gregorian)
 curl "http://localhost:3000/v0/2/g2l?y=2025&m=9&d=2&z=8"
 ```
 
+## 🔑 API Key Authorization
+
+> **All API requests require an API key for authorization.**
+
+You must include your API key with every request, either in the `Authorization` header or as a query parameter.
+
+**How to provide your API key:**
+
+- **HTTP Header (recommended):**
+  ```
+  Authorization: your-secret-key-here
+  ```
+
+- **Query parameter (alternative):**
+  ```
+  ?api_key=your-secret-key-here
+  ```
+
+**Example using curl:**
+```bash
+curl -H "Authorization: your-secret-key-here" "http://localhost:3000/v0/2/g2l?y=2025&m=9&d=2&z=8"
+```
+or
+```bash
+curl "http://localhost:3000/v0/2/g2l?y=2025&m=9&d=2&z=8&api_key=your-secret-key-here"
+```
+
+If the API key is missing or invalid, the server will respond with:
+```json
+{
+  "error": "Unauthorized: Invalid or missing API key"
+}
+```
+
+**Set your API key in the `.env` file:**
+```
+API_KEY=your-secret-key-here
+```
+
 ## Usage
 
 There are two ways to run the API server: **locally** or **using Docker**.
