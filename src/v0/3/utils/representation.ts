@@ -1,7 +1,97 @@
-import { LunarDate } from "../types/calendar";
+import { GregorianDate, LunarDate } from "../types/calendar";
 import { LanguageName } from "../types/language";
-import { stringifyChineseNumerical } from "./Chinese";
-import { Constants } from "./constants";
+
+const CHINESE = {
+  branches: [
+    "申",
+    "酉",
+    "戌",
+    "亥",
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+  ],
+  stems: ["庚", "辛", "壬", "癸", "甲", "乙", "丙", "丁", "戊", "己"],
+};
+const ENGLISH = {
+  branches: [
+    "Monkey",
+    "Rooster",
+    "Dog",
+    "Pig",
+    "Rat",
+    "Ox",
+    "Tiger",
+    "Rabbit",
+    "Dragon",
+    "Snake",
+    "Horse",
+    "Goat",
+  ],
+  stems: [
+    "Metal",
+    "Metal",
+    "Water",
+    "Water",
+    "Wood",
+    "Wood",
+    "Fire",
+    "Fire",
+    "Earth",
+    "Earth",
+  ],
+};
+const VIETNAMESE = {
+  branches: [
+    "Thân",
+    "Dậu",
+    "Tuất",
+    "Hợi",
+    "Tý",
+    "Sửu",
+    "Dần",
+    "Mão",
+    "Thìn",
+    "Tỵ",
+    "Ngọ",
+    "Mùi",
+  ],
+  stems: [
+    "Canh",
+    "Tân",
+    "Nhâm",
+    "Quý",
+    "Giáp",
+    "Ất",
+    "Bính",
+    "Đinh",
+    "Mậu",
+    "Kỷ",
+  ],
+};
+
+/**
+ * 
+ * @param date Gregorian date
+ * @returns String representation of the Gregorian date in the modern
+ * representation
+ */
+export function stringifyGregorian(date: GregorianDate): string {
+  const month = date.month.toString();
+  const day = date.day.toString();
+  return (
+    date.year.toString() +
+    "." +
+    ("0".repeat(Math.max(0, 2 - month.length)) + month) +
+    "." +
+    ("0".repeat(Math.max(0, 2 - day.length)) + day)
+  );
+}
 
 /**
  *
@@ -10,20 +100,20 @@ import { Constants } from "./constants";
  * @param language Language
  * @returns String representation of the Lunar date
  */
-export function stringifyLunarDate(
+export function stringifyLunar(
   lunarDate: LunarDate,
   showMonthSize: boolean,
   language: LanguageName | null
 ): string | null {
   switch (language) {
     case "vi":
-      return stringifyLunarDateInVietnamese(lunarDate, showMonthSize);
+      return stringifyLunarInVietnamese(lunarDate, showMonthSize);
 
     case "zh":
-      return stringifyLunarDateInChinese(lunarDate, showMonthSize);
+      return stringifyLunarInChinese(lunarDate, showMonthSize);
 
     case "zh-cn":
-      return stringifyLunarDateInChinese(lunarDate, showMonthSize, {
+      return stringifyLunarInChinese(lunarDate, showMonthSize, {
         traditional: false,
       });
 
@@ -31,7 +121,58 @@ export function stringifyLunarDate(
     // fall through
 
     default:
-      return stringifyLunarDateInModernNotation(lunarDate, showMonthSize);
+      return stringifyLunarInModernNotation(lunarDate, showMonthSize);
+  }
+}
+
+/**
+ * 
+ * @param value An integer from 1 to 30
+ * @returns Chinese numerical value, that frequently used on calendar
+ */
+export function stringifyChineseNumerical(value: number): string {
+  if (value == 20) {
+    return "二十";
+  } else {
+    const tens = Math.floor(value / 10.0) * 10;
+    const units = value - tens;
+    return getChineseDigit(tens) + getChineseDigit(units);
+  }
+}
+
+/**
+ * 
+ * @param value An integer from 1 to 10, or 20, or 30
+ * @returns Corresponding Chinese numerical value
+ */
+export function getChineseDigit(value: number): string {
+  switch (value) {
+    case 1:
+      return "一";
+    case 2:
+      return "二";
+    case 3:
+      return "三";
+    case 4:
+      return "四";
+    case 5:
+      return "五";
+    case 6:
+      return "六";
+    case 7:
+      return "七";
+    case 8:
+      return "八";
+    case 9:
+      return "九";
+    case 10:
+      return "十";
+    case 20:
+      return "廿";
+    case 30:
+      return "三十";
+    default:
+      return "";
   }
 }
 
@@ -41,7 +182,7 @@ export function stringifyLunarDate(
  * @param showMonthSize Whether to show the month size
  * @returns String representation of the Lunar date in Chinese
  */
-export function stringifyLunarDateInChinese(
+export function stringifyLunarInChinese(
   lunarDate: LunarDate,
   showMonthSize: boolean,
   options?: { traditional?: boolean }
@@ -76,7 +217,7 @@ export function stringifyLunarDateInChinese(
  * @param showMonthSize Whether to show the month size
  * @returns String representation of the Lunar date in Vietnamese
  */
-export function stringifyLunarDateInVietnamese(
+export function stringifyLunarInVietnamese(
   lunarDate: LunarDate,
   showMonthSize: boolean
 ): string {
@@ -86,7 +227,7 @@ export function stringifyLunarDateInVietnamese(
     " tháng " +
     lunarDate.month.toString() +
     (lunarDate.leap ? " nhuận" : "") +
-    (showMonthSize ? (lunarDate.monthSize === 30 ? " (lớn)" : " (nhỏ)") : "") +
+    (showMonthSize ? (lunarDate.monthSize === 30 ? " (đủ)" : " (thiếu)") : "") +
     " năm " +
     getLunarYearStem(lunarDate.year, "vi") +
     " " +
@@ -101,7 +242,7 @@ export function stringifyLunarDateInVietnamese(
  * @returns String representation of the Lunar date in so-called
  * "modern notation."
  */
-export function stringifyLunarDateInModernNotation(
+export function stringifyLunarInModernNotation(
   lunarDate: LunarDate,
   showMonthSize: boolean
 ): string {
@@ -134,16 +275,16 @@ export function getLunarYearBranch(
   }
   switch (language) {
     case "en":
-      return Constants.ENGLISH.branches[branch];
+      return ENGLISH.branches[branch];
 
     case "vi":
-      return Constants.VIETNAMESE.branches[branch];
+      return VIETNAMESE.branches[branch];
 
     case "zh":
     // fall through
 
     default:
-      return Constants.CHINESE.branches[branch];
+      return CHINESE.branches[branch];
   }
 }
 
@@ -160,15 +301,15 @@ export function getLunarYearStem(year: number, language: LanguageName): string {
   }
   switch (language) {
     case "en":
-      return Constants.ENGLISH.stems[stem];
+      return ENGLISH.stems[stem];
 
     case "vi":
-      return Constants.VIETNAMESE.stems[stem];
+      return VIETNAMESE.stems[stem];
 
     case "zh":
     // fall through
 
     default:
-      return Constants.CHINESE.stems[stem];
+      return CHINESE.stems[stem];
   }
 }

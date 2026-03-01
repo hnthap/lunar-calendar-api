@@ -71,9 +71,9 @@ const helpInfo: HelpInfo = [
         meaning: "The month of the year, from 1 to 12.",
       },
       {
-        param: "l",
+        param: "leap",
         meaning:
-          'Indicating whether the specified Lunar month is leap. Must be one of: "true", "t" (true), "1" (true), "false", "f" (false), "0" (false).',
+          'Indicating whether the specified Lunar month is leap. Must be one of: "true", "1" (true), "false", "0" (false).',
       },
       {
         param: "d",

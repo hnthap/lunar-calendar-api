@@ -1,33 +1,28 @@
 # Lunar Calendar API
 
-[![Pre-release](https://img.shields.io/badge/version-v0.2.3-blue?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api)
+[![Pre-release](https://img.shields.io/badge/version-v0.3.0-blue?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api)
 [![GitHub Stars](https://img.shields.io/github/stars/hnthap/lunar-calendar-api?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api/stargazers)
-<!--[![Netlify Status](https://img.shields.io/netlify/335cf848-089d-4346-a941-85ce9813328b?style=for-the-badge&logo=netlify)](https://app.netlify.com/projects/lunar-calendar-api/deploys)-->
 
-<!--🔗 **[Try API](https://lunar-calendar-api.netlify.app)** | -->
 ✨ **[Try Web App](https://hnthap.github.io/lunar-calendar-converter-interface/)** | 📖 **[API Documentation](#api)**
 
 > *An API that converts between Gregorian and Lunar calendar systems, serving cultural and religious applications worldwide*
 
-The Lunar Calendar API is built using the astronomical formulae from *Astronomical Algorithms* by Jean Meeus, 1998 and Ho Ngoc Duc's Lunar calendar calculator.
+The Lunar Calendar API is built using the astronomical formulae from *Astronomical Algorithms* by Jean Meeus, 1998.
 
 ## ⚠️ Demo API Update
 
 > **The public demo endpoint (`lunar-calendar-api.netlify.app`) has been sunset due to excessive traffic.**
 
-**First, a huge thank you.** I built this project to learn, and I am incredibly grateful that so many of you have found it useful. The response has been amazing—to the point where the demo was handling **over 6,000 requests every day**!
-
-As I work full-time, I cannot maintain a paid infrastructure for a free demo.
+Thank you to everyone who used this! The response was amazing (handling **over 6,000 requests daily**) but as a solo developer, I cannot maintain the paid infrastructure required for a free public demo.
 
 **The Good News: You can own it!**
-You can deploy your own private, unlimited instance of this API for free in less than 2 minutes.
 
-1.  **Click the button below** to deploy this to your own Netlify account.
-2.  You will get a new URL (e.g., `https://your-name-lunar-api.netlify.app`) to use in your apps.
+Deploy your own private, unlimited instance for free in less than 2 minutes:
+
+1. Click the button below to deploy to your Netlify account.
+2. Get your new URL (e.g., https://your-name-lunar-api.netlify.app) to use in your apps.
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/hnthap/lunar-calendar-api)
-
-*Thank you for understanding and for supporting open source!*
 
 ## Why This API?
 
@@ -35,18 +30,10 @@ Lunar calendars guide over one billion people's cultural and religious practices
 
 ## Quick Start
 
-<!--
-Convert September 2nd, 2025 (in Gregorian calendar) to Lunar calendar in time zone +08:00:
-
-```bash
-curl "https://lunar-calendar-api.netlify.app/v0/2/g2l?y=2025&m=9&d=2&z=8"
-```
--->
-
 Run the server locally (see below), then convert September 2nd, 2025 (Gregorian) to Lunar calendar in time zone +08:00:
 
 ```bash
-curl "http://localhost:3000/v0/2/g2l?y=2025&m=9&d=2&z=8"
+curl "http://localhost:3000/v0/3/g2l?y=2025&m=9&d=2&z=8"
 ```
 
 ## Usage
@@ -105,21 +92,23 @@ docker build --target tester .
 
 **📜 Extended Date Range** - Supports calculations for historical dates (note: accuracy decreases for very ancient dates due to astronomical uncertainties)
 
+**🛡️ Strict Data Validation** - Actively rejects impossible input dates to prevent silent errors
+
 **🌏 Multilingual Output** - English, Vietnamese, Traditional/Simplified Chinese
 
-| Language              | Value   | Example                                 |
-| --------------------- | ------- | --------------------------------------- |
-| English               | `en`    | `2025.06s+.18`                          |
-| Vietnamese            | `vi`    | `ngày 18 tháng 6 nhuận (nhỏ) năm Ất Tỵ` |
-| Chinese (Traditional) | `zh`    | `乙巳年閏六月（小）十八日`              |
-| Chinese (Simplified)  | `zh-cn` | `乙巳年闰六月（小）十八日`              |
+| Language              | Value   | Example                                   |
+| --------------------- | ------- | ----------------------------------------- |
+| English               | `en`    | `2025.06s+.18`                            |
+| Vietnamese            | `vi`    | `ngày 18 tháng 6 nhuận (thiếu) năm Ất Tỵ` |
+| Chinese (Traditional) | `zh`    | `乙巳年閏六月（小）十八日`                   |
+| Chinese (Simplified)  | `zh-cn` | `乙巳年闰六月（小）十八日`                   |
 
 ## API
 
 ### Convert Gregorian date to Lunar calendar
 
 ```http
-GET /v0/2/g2l
+GET /v0/3/g2l
 ```
 
 Parameters:
@@ -132,10 +121,17 @@ Parameters:
 
 Return: JSON object of the equivalent date in Lunar calendar.
 
+Error Responses:
+
+* `400 Bad Request`: Returned if required parameters are missing or if the provided Gregorian date is mathematically invalid (e.g., February 30th).
+  ```json
+  { "message": "Invalid parameters: ... See http://.../help for more." }
+  ```
+
 **Example 1:** To convert the Gregorian date July 19th, 2024 in time zone +07:00 to Lunar calendar:
 
 ```http
-GET /v0/2/g2l?y=2024&m=7&d=19&z=7
+GET /v0/3/g2l?y=2024&m=7&d=19&z=7
 ```
 
 This should send:
@@ -158,7 +154,7 @@ which means July 19th, 2024 is the day 14, month 6 in Lunar calendar (approximat
 **Example 2:** To convert the Gregorian date August 11th, 2025 in time zone +07:00 to Lunar calendar and also get the textual representation in Traditional Chinese:
 
 ```http
-GET /v0/2/g2l?y=2025&m=8&d=11&z=7&lang=zh
+GET /v0/3/g2l?y=2025&m=8&d=11&z=7&lang=zh
 ```
 
 This should send:
@@ -181,7 +177,7 @@ which means August 11th, 2025 is the day 18, month 6 (leap) in Lunar calendar (a
 **Example 3:** To convert the Gregorian date December 31st, 2010 in time zone +07:00 to Lunar calendar and also get the textual representation in Vietnamese:
 
 ```http
-GET /v0/2/g2l?y=2010&m=12&d=31&z=7&lang=vi
+GET /v0/3/g2l?y=2010&m=12&d=31&z=7&lang=vi
 ```
 
 This should send:
@@ -195,7 +191,7 @@ This should send:
     "leap": false,
     "day": 26
   },
-  "text": "ngày 26 tháng 11 (nhỏ) năm Canh Dần"
+  "text": "ngày 26 tháng 11 (thiếu) năm Canh Dần"
 }
 ```
 
@@ -204,7 +200,7 @@ which means December 31st, 2010 is the day 29, month 11 in Lunar calendar (appro
 **Example 4:** To convert the Gregorian date August 31st, 2025 in time zone +08:00 to Lunar calendar and also get the textual representation in Simplified Chinese:
 
 ```http
-GET /v0/2/g2l?y=2025&m=8&d=31&z=8&lang=zh-cn
+GET /v0/3/g2l?y=2025&m=8&d=31&z=8&lang=zh-cn
 ```
 
 This should send:
@@ -227,7 +223,7 @@ which means August 31st, 2025 is the day 9, month 7 (not leap) in Lunar calendar
 ### Convert Lunar date to Gregorian calendar
 
 ```http
-GET /v0/2/l2g
+GET /v0/3/l2g
 ```
 
 Parameters:
@@ -240,10 +236,17 @@ Parameters:
 
 Return: JSON object of the equivalent date in Gregorian calendar.
 
+Error Responses:
+
+* `400 Bad Request`: Returned if required parameters are missing, or if the requested date is astronomically impossible (e.g., requesting `d=31`, or a `leap=true` month in a year that does not have one).
+  ```json
+  { "message": "Invalid parameters: ... See http://.../help for more." }
+  ```
+
 **Example:** To convert the Lunar date: day 15, month 8 (not leap), approximately in AD 2024, in time zone +07:00, to Gregorian calendar,
 
 ```http
-GET /v0/2/l2g?y=2024&m=8&leap=false&d=15&z=7
+GET /v0/3/l2g?y=2024&m=8&leap=false&d=15&z=7
 ```
 
 This should send:
@@ -263,7 +266,7 @@ which means the Lunar date falls in September 17th, 2024 (Gregorian calendar).
 ### Show Help
 
 ```http
-GET /v0/2/help
+GET /v0/3/help
 ```
 
 Return: API documentation in JSON format.
@@ -291,20 +294,10 @@ Contributions welcome! Fork the repo, create a feature branch, and submit a pull
 
 ## License
 
-This project contains code derived from Ho Ngoc Duc's lunar calendar algorithms, which restricts the overall license to personal, non-commercial use. See individual license sections below for details.
+Copyright (c) 2026 Huynh Nhan Thap
 
-### Lunar Calendar API
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-> Copyright (c) 2024 Huynh Nhan Thap. All Rights Reserved.
-> 
-> Permission to use, copy, modify, and redistribute this software and its documentation for personal, non-commercial use is hereby granted provided that this copyright notice and appropriate documentation appears in all copies.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-### Ho Ngoc Duc's Lunar calendar program in Javascript
-
-> https://www.informatik.uni-leipzig.de/~duc/amlich/amlich-aa98.js
-> 
-> Copyright (c) 2006 Ho Ngoc Duc. All Rights Reserved.
-> 
-> Astronomical algorithms from the book "Astronomical Algorithms" by Jean Meeus, 1998
-> 
-> Permission to use, copy, modify, and redistribute this software and its documentation for personal, non-commercial use is hereby granted provided that this copyright notice and appropriate documentation appears in all copies.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

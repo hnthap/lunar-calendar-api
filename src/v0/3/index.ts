@@ -3,7 +3,7 @@ import { g2lRouter } from "./routers/g2l.router";
 import { helpRouter } from "./routers/help.router";
 import { l2gRouter } from "./routers/l2g.router";
 
-export const v02Router = express
+export const v03Router = express
   .Router()
   .use("/g2l", g2lRouter)
   .use("/l2g", l2gRouter)
