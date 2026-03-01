@@ -1,12 +1,13 @@
 import express from "express";
 import { GregorianDate, LunarDate } from "../types/calendar";
-import { convertLunarToGregorian, getLunarDate } from "../utils/algorithms";
 import {
   isParsableToBoolean,
   isParsableToInt,
   respondInvalidParameter,
   respondMissingParameter,
 } from "../utils/utils";
+import { createLunarDate } from "../astronomy/time";
+import { toGregorian } from "../astronomy/converter";
 
 export const l2gRouter = express.Router();
 
@@ -24,7 +25,7 @@ l2gRouter.get("/", function (req, res) {
   if (!isParsableToInt(q.z)) {
     return respondMissingParameter("z", res, req);
   }
-  if (!isParsableToBoolean(q.leap) && q.source === "Lunar") {
+  if (!isParsableToBoolean(q.leap)) {
     return respondMissingParameter("leap", res, req);
   }
   return handleLunarToGregorian(
@@ -37,7 +38,9 @@ l2gRouter.get("/", function (req, res) {
     },
     (result) => res.send(result),
     () => {
-      return respondInvalidParameter(null, res, req);
+      return respondInvalidParameter(
+        "Invalid lunar month, day, or leap status.", res, req,
+      );
     }
   );
 });
@@ -49,17 +52,11 @@ function handleLunarToGregorian(
   }) => void,
   onFailure: () => void
 ) {
-  const lunarDate = getLunarDate(
-    date.year,
-    date.month,
-    date.leap,
-    date.day,
-    date.tz
-  );
+  const lunarDate = createLunarDate(date);
   if (lunarDate === null) {
     return onFailure();
   }
-  const gregorianDate = convertLunarToGregorian(lunarDate);
+  const gregorianDate = toGregorian(lunarDate);
   return onSuccess({
     date: {
       year: gregorianDate.year,

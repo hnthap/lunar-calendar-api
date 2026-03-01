@@ -13,15 +13,14 @@ export function respondMissingParameter(
 }
 
 export function respondInvalidParameter(
-  paramName: string | null,
+  message: string | null,
   res: express.Response,
   req: express.Request
 ) {
-  let message;
-  if (paramName) {
-    message = "Invalid parameters.";
+  if (message) {
+    message = "Invalid parameters: " + message.trim();
   } else {
-    message = `Parameter "${paramName}"'s value is invalid.`;
+    message = "Invalid parameters.";
   }
   return res.status(400).send({
     message:
@@ -35,7 +34,7 @@ export function respondInvalidParameter(
  * @returns Whether `s` is parsable to integer
  */
 export function isParsableToInt(s: unknown): s is string {
-  return typeof s === "string" && /[+-]?[0-9]+/.test(s);
+  return typeof s === "string" && /^[+-]?[0-9]+$/.test(s);
 }
 
 /**
@@ -44,5 +43,5 @@ export function isParsableToInt(s: unknown): s is string {
  * @returns Whether `s` is parsable to boolean
  */
 export function isParsableToBoolean(s: unknown): s is string {
-  return typeof s === "string" && /true|false|0|1/i.test(s);
+  return typeof s === "string" && /^(true|false|0|1)$/i.test(s);
 }

@@ -1,13 +1,14 @@
 import express from "express";
 import { GregorianDate, LunarDate } from "../types/calendar";
 import { isLanguageName, LanguageName } from "../types/language";
-import { convertGregorianToLunar, getGregorianDate } from "../utils/algorithms";
-import { stringifyLunarDate } from "../utils/Lunar";
 import {
   isParsableToInt,
   respondInvalidParameter,
   respondMissingParameter,
 } from "../utils/utils";
+import { createGregorianDate } from "../astronomy/time";
+import { toLunar } from "../astronomy/converter";
+import { stringifyLunar } from "../utils/representation";
 
 export const g2lRouter = express.Router();
 
@@ -40,7 +41,9 @@ g2lRouter.get("/", function (req, res) {
     language,
     (result) => res.send(result),
     () => {
-      return respondInvalidParameter(null, res, req);
+      return respondInvalidParameter(
+        "Invalid Gregorian month and/or day.", res, req,
+      );
     }
   );
 });
@@ -54,16 +57,11 @@ function handleGregorianToLunar(
   }) => void,
   onFailure: () => void
 ) {
-  const gregorianDate = getGregorianDate(
-    date.year,
-    date.month,
-    date.day,
-    date.tz
-  );
+  const gregorianDate = createGregorianDate(date);
   if (gregorianDate === null) {
     return onFailure();
   }
-  const lunarDate = convertGregorianToLunar(gregorianDate);
+  const lunarDate = toLunar(gregorianDate);
   return onSuccess({
     date: {
       year: lunarDate.year,
@@ -72,6 +70,6 @@ function handleGregorianToLunar(
       leap: lunarDate.leap,
       day: lunarDate.day,
     },
-    text: stringifyLunarDate(lunarDate, true, language),
+    text: stringifyLunar(lunarDate, true, language),
   });
 }
