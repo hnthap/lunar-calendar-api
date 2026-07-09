@@ -31,29 +31,29 @@ const helpInfo: HelpInfo = [
       {
         param: "y",
         meaning:
-          "The year (AD 1 is 1, AD 2024 is 2024; BC years are not included).",
+          "Gregorian year. For example, AD 1 is 1, AD 2024 is 2024, 1 BC is 0, 10 BC is -9.",
       },
       {
         param: "m",
-        meaning: "The month of the year, from 1 to 12.",
+        meaning: "Gregorian month, from 1 to 12.",
       },
       {
         param: "d",
-        meaning: "The day of the month, from 1 to 31 (for Gregorian calendar).",
+        meaning: "Gregorian day of month, from 1 to 31.",
       },
       {
         param: "z",
         meaning:
-          "Time zone offset in hours, e.g. +09:00 is 9, -10:00 is -10, Zulu is 0.",
+          "Time zone offset in hours. For example +09:00 is 9, -10:00 is -10, 00:00 is 0.",
       },
       {
-        param: "lang",
+        param: "lang or language",
         meaning:
-          "[Optional] Language of the textual representation of Lunar date. Must be one of: " +
+          "[Optional] Language of textual representation of the Lunar date, must be one of: " +
           languageNames
             .map((name) => `"${name}" (${languageNameMeanings[name]})`)
             .join(", ") +
-          '. Default is "en" (English, i.e. modern representation).',
+          '. If not specified, a "modern representation" would be provided. lang and language are equivalent.',
       },
     ],
   },
@@ -68,7 +68,7 @@ const helpInfo: HelpInfo = [
       },
       {
         param: "m",
-        meaning: "The month of the year, from 1 to 12.",
+        meaning: "Lunar month, from 1 to 12.",
       },
       {
         param: "leap",
@@ -77,12 +77,12 @@ const helpInfo: HelpInfo = [
       },
       {
         param: "d",
-        meaning: "The day of the month, from 1 to 30.",
+        meaning: "Lunar day of month, from 1 to 30.",
       },
       {
         param: "z",
         meaning:
-          "Time zone offset in hours, e.g. +09:00 is 9, -10:00 is -10, Zulu is 0.",
+          "Time zone offset in hours. For example +09:00 is 9, -10:00 is -10, 00:00 is 0.",
       },
     ],
   },
@@ -93,7 +93,7 @@ export const helpRouter = express.Router();
 helpRouter.get("/", function (req, res) {
   return res.send(
     helpInfo.map((item) => {
-      item.endpoint = "/v0/2" + item.endpoint;
+      item.endpoint = "/v0/3" + item.endpoint;
       return item;
     })
   );
