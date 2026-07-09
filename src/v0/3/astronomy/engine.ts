@@ -49,7 +49,7 @@ function getWinterSolsticeJDTD(
  * 
  * @param gregorianYear A Gregorian year
  * @param tz Timezone offset
- * @returns Lunation number () of the New Moon that begins the 11th Lunar
+ * @returns Lunation number (k) of the New Moon that begins the 11th Lunar
  * Month, i.e., Month 11
  */
 export function getMonth11K(
@@ -76,7 +76,7 @@ export function getMonth11K(
  * @param nextYearMonth11K
  * Lunation number (k) of Month 11 of the next year
  * @param tz Timezone offset
- * @returns Lunation number (k) the first month without a Principal Solar Term
+ * @returns Lunation number (k) of the first month without a Principal Solar Term
  * in the lunar year from Month 11 to before the next Month 11, otherwise,
  * null
  */
