@@ -3,11 +3,14 @@
 [![Pre-release](https://img.shields.io/badge/version-v0.3.0-blue?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api)
 [![GitHub Stars](https://img.shields.io/github/stars/hnthap/lunar-calendar-api?style=for-the-badge&logo=github)](https://github.com/hnthap/lunar-calendar-api/stargazers)
 
-✨ **[Try Web App](https://hnthap.github.io/lunar-calendar-converter-interface/)** | 📖 **[API Documentation](#api)**
+✨ **[Try Web App](https://hnthap.github.io/lunar-calendar-converter-interface/)** | 📖 **[API Documentation](#api)** | ⚡ **[Native C Library (LCCA)](https://github.com/hnthap/lcca)**
 
 > *An API that converts between Gregorian and Lunar calendar systems, serving cultural and religious applications worldwide*
 
 The Lunar Calendar API is built using the astronomical formulae from *Astronomical Algorithms* by Jean Meeus, 1998.
+
+> [!TIP]
+> **Prefer C over HTTP?** [**LCCA**](https://github.com/hnthap/lcca) is a dependency-free C99 port of this engine — a native shared library (`liblcca.dll` / `liblcca.so`) you can link directly or call via FFI. See [Related Projects](#related-projects).
 
 ## ⚠️ Demo API Update
 
@@ -102,6 +105,10 @@ docker build --target tester .
 | Vietnamese            | `vi`    | `ngày 18 tháng 6 nhuận (thiếu) năm Ất Tỵ` |
 | Chinese (Traditional) | `zh`    | `乙巳年閏六月（小）十八日`                   |
 | Chinese (Simplified)  | `zh-cn` | `乙巳年闰六月（小）十八日`                   |
+
+## Related Projects
+
+Need the same conversions without running an HTTP service? **[LCCA (Lunar Calendar C API)](https://github.com/hnthap/lcca)** is a C99 port of this project's astronomy engine, packaged as a dependency-free native shared library (`liblcca.dll` / `liblcca.so`). It can be linked directly into C/C++ programs or called from other runtimes via FFI (a PowerShell module is included as a reference consumer), and it computes dates from the same Jean Meeus algorithms with no lookup tables. This TypeScript API remains the reference implementation that LCCA verifies its numerical output against.
 
 ## API
 
